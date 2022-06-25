@@ -1,6 +1,18 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}, err => {
+    if (err) throw err;
+    console.log('Connect to MongoDB!!');
+});
+
+require('./api/models/products');
+require('./api/models/orders');
 
 const app = express();
 
@@ -11,7 +23,7 @@ const ordersRoutes = require('./api/routes/orders')
 app.use(morgan('dev'));
 
 //para conseguir receber JSON na requisição
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const cors = (req, res, next) => {
@@ -34,6 +46,7 @@ app.use(cors)
 
 app.use('/products', productsRoutes);
 app.use('/orders', ordersRoutes);
+app.use('/uploads', express.static('uploads'));
 
 app.use('/api', (req, res, next) => {
     res.status(200).json({
@@ -42,7 +55,7 @@ app.use('/api', (req, res, next) => {
 })
 
 
-app.use((req, res, next) =>{
+app.use((req, res, next) => {
     const error = new Error('Not Found');
     error.status = 404;
     next(error);
