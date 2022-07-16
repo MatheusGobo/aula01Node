@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const swaggerUi = require('swagger-ui-express');
 
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -54,6 +55,9 @@ app.use('/products', productsRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/users', usersRoutes);
 app.use('/uploads', express.static('uploads'));
+
+let swaggerSpec = require('./api/config/swagger');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api', (req, res, next) => {
     res.status(200).json({

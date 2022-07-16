@@ -1,0 +1,117 @@
+paths:
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Buscar Produtos
+      description: Retorna uma lista contendo vários produtos.
+      responses:
+        '200':
+          description: Uma lista de Produtos
+          schema: 
+            $ref: '#/definitions/Products'
+    post:
+      tags:
+        - Products
+      summary: Cadastrar Produto
+      description: Salvar o produto que foi enviado como objeto
+      consumes: application/json
+      parameters:
+        - in: body
+          name: body
+          description: Um objeto contendo o produto
+          required: true
+          schema:
+            $ref: '#/definitions/Products'
+      responses:
+        '200':
+          description: Uma lista de Produtos
+          schema: 
+            $ref: '#/definitions/Products'
+  /products/{productId}:
+    get:
+      tags:
+        - Products
+      summary: Buscar um Produtos
+      description: Retorna um objeto contendo o produto
+      parameters:
+        - in: path
+          name: productId
+          description: Produto id
+          required: true
+          schema:
+            type: object
+            properties:
+              type: object
+              properties:
+                id:
+                  type: string
+                  
+      responses:
+        '200':
+          description: Um objeto de Produto
+          schema: 
+            $ref: '#/definitions/Products'
+    patch:
+      tags:
+        - Products
+      summary: Alterar um  Produto
+      description: Alterar um produto pelo objeto
+      consumes: application/json
+      parameters:
+        - in: path
+          name: productId
+          description: Produto id
+          required: true
+          schema:
+            type: object
+            properties:
+              type: object
+              properties:
+                id:
+                  type: string
+        - in: body
+          name: body
+          description: Um objeto de produto alterado
+          schema:
+            $ref: '#/definitions/Products'
+      responses:
+        '200':
+          description: Uma lista de Produtos
+          schema: 
+            $ref: '#/definitions/Products'
+    delete:
+      tags:
+        - Products
+      summary: Deleta um Produtos
+      description: Deleta um objeto contendo o produto
+      parameters:
+        - in: path
+          name: productId
+          description: Produto id
+          required: true
+          schema:
+            type: object
+            properties:
+              type: object
+              properties:
+                id:
+                  type: string
+                  
+      responses:
+        '200':
+          description: Um objeto de Produto
+          schema: 
+            $ref: '#/definitions/Products'
+definitions:
+  Products:
+    type: object
+    properties:
+      name:
+        type: string
+        default: Banana
+      price:
+        type: number
+        default: 5.8
+      image:
+        type: string

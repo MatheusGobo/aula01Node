@@ -2,10 +2,11 @@ const express = require('express');
 const { default: mongoose } = require('mongoose');
 const router = express.Router();
 const passport = require('passport');
+const controllerUser = require('../controllers/user-controller');
 
 const UsersModel = mongoose.model('Users');
 
-router.get('/', async (req, res, next) => {
+router.get('/', controllerUser.verifyJWT, async (req, res, next) => {
     try {
         const users = await UsersModel.find();
         res.status(200).json({
@@ -91,7 +92,7 @@ router.post('/login/', async (req, res, next) => {
             if (err) { return next(err); }
 
             if (user) {
-                return res.status(200).json({ token: user.generateJWT() });
+                return res.status(200).json({token: user.generateJWT()});
             } else {
                 return res.status(401).json(info);
             }
