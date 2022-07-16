@@ -31,6 +31,8 @@ router.get('/', controllerUser.verifyJWT, async (req, res, next) => {
 
 });
 
+router.get('/info', controllerUser.verifyJWT, controllerUser.get_info_user);
+
 router.get('/:userId', async (req, res, next) => {
     const id = req.params.userId;
 
@@ -84,10 +86,11 @@ router.post('/signup/', async (req, res, next) => {
 });
 
 router.post('/login/', async (req, res, next) => {
+
     if (!req.body.username || !req.body.password) {
         return res.status(400).json({message: 'Por Favor, preencha o usuário e a senha'});
     }
-    
+
     passport.authenticate('local', function (err, user, info) {
             if (err) { return next(err); }
 
@@ -98,6 +101,8 @@ router.post('/login/', async (req, res, next) => {
             }
         })(req, res, next);
 });
+
+
 
 router.delete('/:userId', async (req, res, next) => {
     const id = req.params.userId;

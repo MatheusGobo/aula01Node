@@ -33,20 +33,21 @@ app.use(bodyParser.json());
 
 app.use(passport.initialize());
 
-const cors = (req, res, next) => {
+let cors = (req, res, next) => {
     const whiteList = [
-        'http://localhost:8080'
-    ]
+        'http://localhost:8080',
+        'http://localhost:4200'
+    ];
 
-    const origin = req.header.origin
+    const origin = req.headers.origin
 
     if (whiteList.indexOf(origin) > -1) {
         res.setHeader('Access-Control-Allow-Origin', '*')
     }
 
-    res.setHeader('Acess-Control.Allow-Methods', 'GET,PUT,PATCH,POST,DELETE')
-    res.setHeader('Acess-Control.Allow-Methods', 'token, Content-type, Authorization, x-access-token')
-    next()
+    res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'token,Content-Type,Authorization,x-access-token');
+    next();
 }
 
 app.use(cors)
